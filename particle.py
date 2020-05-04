@@ -16,7 +16,7 @@ class Particle: #(Aggregate):
         print(f'Particle Position: [{self.x}, {self.y}] \n')
 
     def take_step(self):
-        
+        ''' docstring ''' 
         # direction = 2
         direction = np.random.randint(0,3)      # Randomly generate a number 0, 1, 2, or 3 to indicate movement up, right,
                                                 # down, or left, respectively
@@ -31,22 +31,8 @@ class Particle: #(Aggregate):
         
         self.steps += 1
 
-    def at_boundary(self):
-        # at boundary
-        if self.y < 0 or self.y > self.axis_length:
-            print(f'Whoops!! Particle left the lattice after {self.steps} steps!')
-            return True
-        elif self.x < 0 or self.x > self.axis_length:                       # Axis is precariously hardcoded ATM ****
-            print(self.y)
-            print(f'Whoops!! Particle left the lattice after {self.steps} steps!')
-            return True
-        # not at boundary
-        else:
-            # print(f'Still on the lattice after {self.steps} steps!')
-            return False
-
     def is_frozen(self):
-
+        ''' docstring '''
         # stuck
         if [self.x, self.y-1] in self.stuck_list or \
            [self.x, self.y+1] in self.stuck_list or \
@@ -60,7 +46,28 @@ class Particle: #(Aggregate):
             # print(f'Still free after {self.steps} step(s)')
             return False
 
+    def at_boundary(self):
+        ''' checks to see if the particle is at the boundary '''
+        # at boundary
+        if self.y < 0 or self.y > self.axis_length:
+            print(f'Whoops!! Particle left the lattice after {self.steps} steps!')
+            return True
+        elif self.x < 0 or self.x > self.axis_length:                       # Axis is precariously hardcoded ATM ****
+            print(self.y)
+            print(f'Whoops!! Particle left the lattice after {self.steps} steps!')
+            return True
+        # not at boundary
+        else:
+            '''
+            while self.is_frozen() is False:
+                
+            '''
+
+            # print(f'Still on the lattice after {self.steps} steps!')
+            return False
+
     def walk_particle(self):
+        ''' docstring '''
         while self.is_frozen() is False and self.at_boundary() is False:
             self.take_step()
             if self.is_frozen() is True:

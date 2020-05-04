@@ -9,10 +9,12 @@ axis_length = int(input("Please enter the desired length of the axes: "))
 number_particles = int(input("Please enter the desired number of particles: "))
 seed =  round(axis_length / 2)
 
+# set the seed to be [seed, 0]
 stuck_list = [
     [seed, 0],
 ]
 
+# generate 'number_particles' particles
 particles = [
     Particle(axis_length, stuck_list) for i in range(0, number_particles, 1)
 ]
