@@ -47,7 +47,7 @@ class Particle: #(Aggregate):
             return False
 
     def at_boundary(self):
-        ''' checks to see if the particle is at the boundary '''
+        ''' checks to see if the particle is at the boundary; if the particle is at the boundary, the particle walk is terminated'''
         # at boundary
         if self.y < 0 or self.y > self.axis_length:
             print(f'Whoops!! Particle left the lattice after {self.steps} steps!')
