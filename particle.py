@@ -7,9 +7,9 @@ class Particle: #(Aggregate):
         # Aggregate.__init__(self, axis_length, number_particles)
         self.axis_length = axis_length
         self.stuck_list = stuck_list
-        self.seed = round(axis_length / 2)
-        self.x = np.random.randint(0, self.axis_length)
-        self.y = axis_length 
+        # self.seed = round(axis_length / 2)
+        self.x = -7 # np.random.randint(0, self.axis_length)
+        self.y = -7 # axis_length 
         self.steps = 0
 
     def displayParticlePosition(self):
@@ -17,8 +17,8 @@ class Particle: #(Aggregate):
 
     def take_step(self):
         ''' docstring ''' 
-        # direction = 2
-        direction = np.random.randint(0,3)      # Randomly generate a number 0, 1, 2, or 3 to indicate movement up, right,
+        direction = 2
+        # direction = np.random.randint(0,3)      # Randomly generate a number 0, 1, 2, or 3 to indicate movement up, right,
                                                 # down, or left, respectively
         if direction == 0:          # up
             self.y += 1
@@ -47,31 +47,34 @@ class Particle: #(Aggregate):
             return False
 
     def at_boundary(self):
-        ''' checks to see if the particle is at the boundary; if the particle is at the boundary, the particle walk is terminated'''
+        ''' checks to see if the particle is at the boundary; if the particle is at the boundary, the particle is flipped to the opposite side'''
         # at boundary
-        if self.y < 0 or self.y > self.axis_length:
-            print(f'Whoops!! Particle left the lattice after {self.steps} steps!')
-            return True
-        elif self.x < 0 or self.x > self.axis_length:                       # Axis is precariously hardcoded ATM ****
-            print(self.y)
-            print(f'Whoops!! Particle left the lattice after {self.steps} steps!')
-            return True
+        if abs(self.y) > self.axis_length or abs(self.x) > self.axis_length:
+            self.y = (abs(self.y) -1) * -1
+            # print(f'Whoops!! Particle left the lattice after {self.steps} steps!')
+            # return True
+        elif self.x > abs(self.axis_length):
+            self.x = (self.x - 1) * -1
+            # print(f'Whoops!! Particle left the lattice after {self.steps} steps!')
+            # return True
         # not at boundary
         else:
-            '''
-            while self.is_frozen() is False:
-                
-            '''
 
-            # print(f'Still on the lattice after {self.steps} steps!')
             return False
+
+    def add_to_stucklist(self):
+        self.stuck_list.append([self.x, self.y])
+
+    def at_boundary_telescope(self):
+        pass
 
     def walk_particle(self):
         ''' docstring '''
-        while self.is_frozen() is False and self.at_boundary() is False:
+        while self.is_frozen() is False:
             self.take_step()
+            self.at_boundary()
             if self.is_frozen() is True:
-                return [self.x, self.y]
+                self.add_to_stucklist()
         
 
 
