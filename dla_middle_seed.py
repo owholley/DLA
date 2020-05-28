@@ -25,7 +25,7 @@ while True:
 
 # set the seed to be [0, -axis_length] a.k.a the middle of the bottom axis
 stuck_list = [
-    [0 , -axis_length],
+    [0 , 0],
 ]
 
 # generate 'number_particles' particles
@@ -58,5 +58,5 @@ plt.xticks(np.arange(min(axis), max(axis)+1, 1), [])
 plt.yticks(np.arange(min(axis), max(axis)+1, 1), [])
 plt.grid()
 
-# plt.savefig('dla_bottom_seed.png')
+# plt.savefig('dla_middle_seed.png')
 plt.show()
