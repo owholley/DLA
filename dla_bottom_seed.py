@@ -50,13 +50,9 @@ axis = np.arange(-axis_length, axis_length, 1) # Set the axis length and the see
 for element in stuck_list:
     plt.plot(element[0], element[1], 'ro')
 
-<<<<<<< HEAD
 plt.plot(stuck_list[0][0], stuck_list[0][1], 'ko')                                     # Plot functions
 
-
-=======
 plt.plot(0, -axis_length, 'ko')                                     # Plot functions
->>>>>>> 8169c1a3626cea7f4a34f07d24a63bdd237797b1
 
 plt.xticks(np.arange(min(axis), max(axis)+1, 1), [])
 plt.yticks(np.arange(min(axis), max(axis)+1, 1), [])
