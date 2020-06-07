@@ -1,8 +1,8 @@
 
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6">
+<!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6">
 </script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
+</script> -->
 
 # Diffusion Limited Aggregation
 
@@ -19,11 +19,13 @@ The model is a variant of the Eden model. In the Eden model, a seed particle at 
 ![Image](./DLA-Images/eden_seed.png)
 A second particle is randomly generated at some large distance away from the origin 
 
-<div class="eq1" align="center">
+< 'LaTex' didn't work :( >
+
+<!-- <div class="eq1" align="center">
 
 \(  X_0 = (X, Y) \in [\frac{-\text{Axis Length}}{2}, \frac{\text{Axis Length}}{2}] \subset \N \\ \scriptsize{ \; where \;} X,Y \scriptsize{\; are\: Random\: Variables}  \)
 
-</div>
+</div> -->
 
 The particle walks randomly until it visits a site adjacent to the seed, where it sticks to become part of the cluster.
 
