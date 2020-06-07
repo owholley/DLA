@@ -16,7 +16,9 @@ For more information, visit [Paul Bourke's page](http://paulbourke.net/fractals/
 ## DLA
 
 The model is a variant of the Eden model. In the Eden model, a seed particle at the origin of a discrete lattice represents the initial state.
+
 ![Image](./DLA-Images/eden_seed.png)
+
 A second particle is randomly generated at some large distance away from the origin 
 
 < 'LaTex' didn't work :( >
