@@ -3,69 +3,9 @@
 import unittest
 
 from particle import Particle
-
-
-class TestParticleGeneration(unittest.TestCase):
-    
-    def test_initial_position(self):
-        """
-        Test to determine if the iniital position of the particles is suffeciently
-        far away from the seed particle (in the domain specified below).
-
-        Domain: x,y in [-axis_length, -axis_length/2] U [axis_length/2, axis_length]
-
-        Check: Distance from (x,y) to the seed particle at (0, 0) < axis_length/2
-        """
-        # particle = Particle(axis_length, stuck_list)
-        # particle.generate_initial_position()
-        # particle.print_particle_position()
-        # dist = np.linalg.norm([particle.get_particle_position(), stuck_list[0]])
-        # self.assertTrue(dist > axis_length/2), f'{dist}'
         
 
 class TestParticleWalk(unittest.TestCase):
-    
-    def test_is_frozen(self):
-        """
-        Test to determine if a walking particle gets frozen when it comes into 
-        contact with an existing part of the cluster.
-
-        Check: If [x+1, y] or [x-1, y] or [x, y+1] or [x, y-1] = [m, n] 
-        in stuck_list particle is stuck and its position should be appended
-        to stuck_list.
-        """
-        pass
-
-    def test_at_boundary(self):
-        """
-        Test to determine if a walking particle exits the lattice while at the
-        boundary.
-
-        Check: If x,y == axis_length particle is at the boundary and should 
-        exit (self.on_lattice = False)
-
-        Cases: 1. on the x boundary           at_boundary() == True
-               2. on the y boundary           at_boundary() == True
-               3. on the x and y boundary     at_boundary() == True
-               4. not on the boundary         at_boundary() == False
-        """
-        axis_length = 10
-        stuck_list = [[0, 0]]
-
-        particles = [Particle(axis_length, stuck_list) for i in range(0,4)]            
-            
-        particles[0].x = 10                          # Case 1
-        particles[1].y = 10                          # Case 2
-        particles[2].x, particles[2].y = 10, 10      # Case 3
-        particles[3].x, particles[3].y = 5, 5        # Case 4
-
-        for particle in particles:
-            particle.at_boundary()
-     
-        self.assertFalse(particles[0].on_lattice)
-        self.assertFalse(particles[1].on_lattice)
-        self.assertFalse(particles[2].on_lattice)
-        self.assertTrue(particles[3].on_lattice)
 
     def test_take_step(self):
         """
@@ -73,17 +13,188 @@ class TestParticleWalk(unittest.TestCase):
         and in one of four directions (UP, DOWN, LEFT, RIGHT)
 
         Check: If (x,y)_n+1 has x OR y value one greater than (x,y)_n
+
+        Case 1: Move UP: [x, y+1]
+        Case 2: Move DOWN: [x, y-1]
+        Case 3: Move RIGHT: [x+1, y]
+        Case 4: Move LEFT: [x-1, y]
         """
         pass
 
-    def test_direction_dist(self):
-        """
-        Test to make sure that all directions (UP, DOWN, LEFT, RIGHT) have an
-        equal chance of being visited
-        """
-        pass
 
+class TestIsFrozen(unittest.TestCase):
+
+    """
+    Class to test is_frozen(). 
+
+    Need to test six(?) possible cases. A frozen particle is one UP from the
+    current particle position, a frozen particle is one DOWN from the current
+    particle position, a frozen particle is one LEFT from the current particle
+    position, a frozen particle is one RIGHT from the current particle 
+    position, there are frozen particle is in TWO directions (for example one 
+    UP and one LEFT) from the current particle position, and finally, there are
+    no frozen particles one step away from the current particle position in any
+    direction.
+
+    Case 1: UP    [x, y+1] in stuck_list
+    Case 2: DOWN  [x, y-1] in stuck_list
+    Case 3: LEFT  [x-1, y] in stuck_list
+    Case 4: RIGHT [x+1, y] in stuck_list
+    Case 5: TWO   [x, y+1], [x-1, y] in stuck_list
+    Case 6: NONE  none of the above cases apply
+    """
+
+    def test_up_is_frozen(self):
+        
+        """
+        Test to determine if is_frozen() correctly identifies a walking 
+        particle as frozen if the position one UP from the current position
+        is in stuck_list (is part of the cluster).
+
+        Case: UP    [x, y+1] in stuck_list
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = -1, 0
+        particle.is_frozen()
+        self.assertTrue(particle.frozen)
+
+    def test_down_is_frozen(self):
+        """
+        Test to determine if is_frozen() correctly identifies a walking
+        particle as frozen if the position one DOWN from the current position
+        is in stuck_list (is part of the cluster).
+
+        Case: DOWN    [x, y-1] in stuck_list
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 0, 1
+        particle.is_frozen()
+        self.assertTrue(particle.frozen)
+
+    def test_left_is_frozen(self):
+        """
+        Test to determine if is_frozen() correctly identifies a walking
+        particle as frozen if the position one LEFT from the current position
+        is in stuck_list (is part of the cluster).
+
+        Case: LEFT    [x-1, y] in stuck_list
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 1, 0
+        particle.is_frozen()
+        self.assertTrue(particle.frozen)
+        
+    def test_right_is_frozen(self):
+        """
+        Test to determine if is_frozen() correctly identifies a walking
+        particle as frozen if the position one RIGHT from the current position
+        is in stuck_list (is part of the cluster).
+
+        Case: RIGHT    [x+1, y] in stuck_list
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = -1, 0
+        particle.is_frozen()
+        self.assertTrue(particle.frozen)
+        
+    def test_two_is_frozen(self):
+        """
+        Test to determine if is_frozen() correctly identifies a walking
+        particle as frozen if two of the positions one step away contain frozen
+        particles (in this case UP and LEFT)
+
+        Case: TWO  UP & LEFT    [x+1, y] in stuck_list
+        """
+        particle = Particle(
+            axis_length=10,
+            stuck_list=[[0, 0], [-1, 0],]
+        )
+        particle.x, particle.y = 0, -1
+        particle.is_frozen()
+        self.assertTrue(particle.frozen)
     
+    def test_not_frozen_particle_is_frozen(self):
+        """
+        Test to determine if is_frozen() correctly leaves an unfrozen particle
+        set to self.frozen = False
+
+        Case: None of the four possible sites the particle could move to are in
+              stuck_list
+        """
+        particle = Particle(10, [[0, 0],])
+        particle.x, particle.y = 5, 5   # Nowhere near stuck_list = [[0, 0],]
+        particle.is_frozen()
+        self.assertFalse(particle.frozen)
+
+class TestAtBoundary(unittest.TestCase):
+
+    """
+    Class to test at_boundary().
+    
+    Need to test four possible cases, particle on the x boundary, particle
+    on the y boundary, particle on both the x and y boundaries, and a particle
+    neither on the x or y boundaries.
+
+    Case 1: x = axis_length
+    Case 2: y = axis_length
+    Case 3: x,y = axis_length
+    Case 4: x,y < axis_length
+    """
+
+    def test_particle_at_x_boundary(self):
+        """
+        Test to determine if the at_boundary() function correctly identifies a
+        particle that is touching the x boundary.
+
+        Case: x = axis_length
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x = 10           # set x = axis_length
+        particle.at_boundary()
+        self.assertFalse(particle.on_lattice)
+
+    def test_particle_at_y_boundary(self):
+        """
+        Test to determine if the at_boundary() function correctly identifies a 
+        particle that is touching the y boundary.
+
+        Case: y = axis_length
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.y = 10           # set y = axis_length
+        particle.at_boundary()
+        self.assertFalse(particle.on_lattice)
+
+    def test_particle_at_x_and_y_boundaries(self):
+        """
+        Test to determine if the at_boundary() function correctly identifies a
+        particle that is touching the y boundary.
+
+        Case x,y = axis_length
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 10, 10   # set x,y = axis_length
+        particle.at_boundary()
+        self.assertFalse(particle.on_lattice)
+
+    def test_particle_not_at_boundary(self):
+        """
+        Test to determine if at_boundary() correctly labels particle.on_lattice
+        as True for a particle which is not touching the boundary
+
+        Case: x,y < axis_length
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 5, 5   # x,y < axis_length
+        particle.at_boundary()
+        self.assertTrue(particle.on_lattice)
+
+
+class TestWalkParticle(unittest.TestCase):
+    
+    """
+    Class to test walk_particle()
+    """
 
 if __name__ == '__main__':
     unittest.main()

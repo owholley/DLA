@@ -11,18 +11,7 @@ class Particle:
         self.frozen = False
         self.x = np.random.randint(-self.axis_length/2, self.axis_length)
         self.y = np.random.randint(-self.axis_length/2, self.axis_length)
-        self.position = [self.x, self.y]
-
-    def generate_initial_position(self):
-        # Needs Fixing, doesn't generate the right domain
-        ''' 
-        Start at a random distant position from the seed
-        '''
         
-        # self.position = [self.x, self.y]
-        # self.x = self.position[0]
-        # self.y = self.position[1]
-
     def get_particle_position(self):
         return [self.x, self.y]
 
@@ -51,23 +40,23 @@ class Particle:
 
     def is_frozen(self):
         ''' docstring '''
-        stuck_position = [
-            [self.x+1, self.y],
-            [self.x-1, self.y],
-            [self.x, self.y+1],
-            [self.x, self.y-1]
-        ]
-        if self.position in stuck_position:
-            self.frozen = True
-            self.print_particle_position()
-            print(f'STUCK!!!! Particle stuck after {self.steps} steps.')
-        # if [self.x, self.y-1] in self.stuck_list or \
-        #    [self.x, self.y+1] in self.stuck_list or \
-        #    [self.x-1, self.y] in self.stuck_list or \
-        #    [self.x+1, self.y] in self.stuck_list:
-        #     print(f'STUCK!!!! Particle stuck after {self.steps} steps')
-        #     self.print_particle_position()
+        # stuck_position = [
+        #     [self.x+1, self.y],
+        #     [self.x-1, self.y],
+        #     [self.x, self.y+1],
+        #     [self.x, self.y-1]
+        # ]
+        # if self.position in stuck_position:
         #     self.frozen = True
+        #     self.print_particle_position()
+        #     print(f'STUCK!!!! Particle stuck after {self.steps} steps.')
+        if [self.x, self.y-1] in self.stuck_list or \
+           [self.x, self.y+1] in self.stuck_list or \
+           [self.x-1, self.y] in self.stuck_list or \
+           [self.x+1, self.y] in self.stuck_list:
+            print(f'STUCK!!!! Particle stuck after {self.steps} steps')
+            self.print_particle_position()
+            self.frozen = True
 
     def at_boundary(self):
         '''
