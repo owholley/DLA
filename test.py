@@ -1,11 +1,63 @@
-# Test the DLA algorithm
-# Going to write tests as if there is no program, then rebuild the algorithm
 import unittest
 
 from particle import Particle
-        
 
-class TestParticleWalk(unittest.TestCase):
+
+class TestParticleMisc(unittest.TestCase):
+    
+    """
+    Class to test the little helper functions that have maybe one case.
+
+    get_particle_position(), print_particle_position(), and 
+    add_to_stuck_list()
+    """
+    
+    def test_get_particle_position(self):
+        """
+        Test to determine if get_particle_position() correctly returns the 
+        particle's position [particle.x, particle.y]
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 5, 5
+        self.assertEqual(
+            [particle.x, particle.y], particle.get_particle_position()
+        )
+
+    def test_print_particle_position(self):
+        """
+        Test to determine if print_particle_position() correctly prints the
+        particles position to the console.
+        """
+        # particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        # particle.x, particle.y = 5, 5
+        # self.assertEqual(
+        #     "Particle Position: [5, 5]", particle.print_particle_position()
+        # )
+        pass
+
+    def test_add_to_stuck_list(self):
+        """
+        Test to determine if add_to_stuck_list correctly takes a position that
+        is frozen and adds it to stuck list. This test just checks that if 
+        particle.frozen = True, then that position is added to stuck_list.
+
+        * It does not check to make sure that the position is in fact adjacent
+        to an existing part of the cluster, the TestIsFrozen class takes care
+        of that.
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 5, 5
+        particle.frozen = True
+        particle.add_to_stuck_list()
+        self.assertTrue(particle.stuck_list, [[0, 0], [5, 5],])
+
+
+
+class TestTakeStep(unittest.TestCase):
+
+    """
+    Class to test take_step()
+    """
 
     def test_take_step(self):
         """

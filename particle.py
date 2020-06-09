@@ -16,7 +16,7 @@ class Particle:
         return [self.x, self.y]
 
     def print_particle_position(self):
-        print(f'Particle Position: [{self.x}, {self.y}] \n')
+        return(f'Particle Position: [{self.x}, {self.y}] \n')
 
     def take_step(self):
         '''
@@ -35,7 +35,7 @@ class Particle:
         
         self.steps += 1
     
-    def add_to_stucklist(self):
+    def add_to_stuck_list(self):
         self.stuck_list.append([self.x, self.y])
 
     def is_frozen(self):
