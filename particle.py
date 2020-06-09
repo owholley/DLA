@@ -10,10 +10,13 @@ class Particle:
 
     def generate_initial_position(self):
         ''' start at a random distant position from the seed '''
-        self.x = np.random.randint(-self.axis_length/2, self.axis_length, 1)
-        self.y = np.random.randint(-self.axis_length/2, self.axis_length, 1)
+        self.x = np.random.randint(-self.axis_length/2, self.axis_length)
+        self.y = np.random.randint(-self.axis_length/2, self.axis_length)
 
-    def display_particle_position(self):
+    def get_particle_position(self):
+        return [self.x, self.y]
+
+    def print_particle_position(self):
         print(f'Particle Position: [{self.x}, {self.y}] \n')
 
     def take_step(self):
@@ -40,7 +43,7 @@ class Particle:
            [self.x-1, self.y] in self.stuck_list or \
            [self.x+1, self.y] in self.stuck_list:
             print(f'STUCK!!!! Particle stuck after {self.steps} steps')
-            self.display_particle_position()
+            self.print_particle_position()
             return True
         # free
         else:
