@@ -45,7 +45,7 @@ class Particle:
         self.stuck_list.append([self.x, self.y])
 
     def is_frozen(self):
-        ''' docstring '''
+        ''' docstring with an inconsequential change '''
         # stuck_position = [
         #     [self.x+1, self.y],
         #     [self.x-1, self.y],
