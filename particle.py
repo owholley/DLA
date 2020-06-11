@@ -12,8 +12,8 @@ class Particle:
         # The particle generation is left over from starting off thinking of
         #  the seed on the bottom of the lattice with application in terms of
         #  modeling frost formation on an existing snowpack.
-        self.x = np.random.randint(-self.axis_length/2, self.axis_length)
-        self.y = np.random.randint(-self.axis_length/2, self.axis_length)
+        self.x = np.random.randint(-self.axis_length, self.axis_length)
+        self.y = np.random.randint(-self.axis_length, self.axis_length)
         
     def get_particle_position(self):
         return [self.x, self.y]
@@ -22,22 +22,22 @@ class Particle:
         return(f'Particle Position: [{self.x}, {self.y}] \n')
 
     def pick_direction(self):
-        self.direction = np.random.randint(0,3)
+        direction = np.random.randint(0,4)
+        return direction
 
-    def take_step(self, direction=pick_direction):
+    def take_step(self, direction):
         '''
         TODO add in a dictionary/vector containing the direction of movement
         ''' 
         # direction = 2
-        # direction = pick_direction
-        if direction == 0:          # up
+        if direction == 0:          # UP
             self.y += 1
-        elif direction == 3:        # right
-            self.x += 1
-        elif direction == 1:        # down
+        elif direction == 1:        # DOWN
             self.y -= 1
-        else:                       # left
+        elif direction == 2:        # LEFT
             self.x -= 1
+        else:                       # RIGHT
+            self.x += 1
         
         self.steps += 1
     
@@ -63,6 +63,7 @@ class Particle:
             print(f'STUCK!!!! Particle stuck after {self.steps} steps')
             self.print_particle_position()
             self.frozen = True
+            self.add_to_stuck_list()
 
     def at_boundary(self):
         '''
@@ -78,7 +79,7 @@ class Particle:
         cluster 
         '''
         while self.on_lattice is True and self.frozen is False:
-            self.take_step()
+            self.take_step(self.pick_direction())
             self.at_boundary()
             self.is_frozen()      
 

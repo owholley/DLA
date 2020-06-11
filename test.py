@@ -1,4 +1,5 @@
 import unittest
+import numpy as np
 
 from particle import Particle
 
@@ -33,7 +34,6 @@ class TestParticleMisc(unittest.TestCase):
         self.assertEqual(
             "Particle Position: [5, 5] \n", particle.print_particle_position()
         )
-        # pass
 
     def test_add_to_stuck_list(self):
         """
@@ -59,6 +59,12 @@ class TestPickDirection(unittest.TestCase):
     Check: Every value generated is in (0, 3), Equal distribution of the four
             directions,
     """
+    def test_pick_direction(self):
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        np.random.seed(0)
+        self.assertEqual(particle.pick_direction(), 0)
+        self.assertEqual(particle.pick_direction(), 3)
+        self.assertEqual(particle.pick_direction(), 1)
 
 class TestTakeStep(unittest.TestCase):
 
@@ -79,13 +85,10 @@ class TestTakeStep(unittest.TestCase):
         particle UP
 
         Case 1: Move UP: [x, y+1]
-        
-        
-        Case 3: Move RIGHT: [x+1, y]
-        Case 4: Move LEFT: [x-1, y]
         """
         particle = Particle(axis_length=10, stuck_list=[[0, 0],])
         particle.x, particle.y = 5, 5
+        np.random.seed(0)
         particle.take_step(0)      # Move particle UP
         self.assertEqual(
             [5, 6], [particle.x, particle.y]
@@ -124,11 +127,11 @@ class TestTakeStep(unittest.TestCase):
         Check: particle.x is increased by one after take_step() moves the 
         particle RIGHT
 
-        Case 2: Move RIGHT: [x-1, y]
+        Case 2: Move RIGHT: [x+1, y]
         """
         particle = Particle(axis_length=10, stuck_list=[[0, 0],])
         particle.x, particle.y = 5, 5
-        particle.take_step(3)     # Move particle LEFT
+        particle.take_step(3)     # Move particle RIGHT
         self.assertEqual(
             [6,5], [particle.x, particle.y]
         )
