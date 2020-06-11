@@ -20,7 +20,7 @@ class TestParticleMisc(unittest.TestCase):
         particle = Particle(axis_length=10, stuck_list=[[0, 0],])
         particle.x, particle.y = 5, 5
         self.assertEqual(
-            [particle.x, particle.y], particle.get_particle_position()
+            [5, 5], particle.get_particle_position()
         )
 
     def test_print_particle_position(self):
@@ -28,12 +28,12 @@ class TestParticleMisc(unittest.TestCase):
         Test to determine if print_particle_position() correctly prints the
         particles position to the console.
         """
-        # particle = Particle(axis_length=10, stuck_list=[[0, 0],])
-        # particle.x, particle.y = 5, 5
-        # self.assertEqual(
-        #     "Particle Position: [5, 5]", particle.print_particle_position()
-        # )
-        pass
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 5, 5
+        self.assertEqual(
+            "Particle Position: [5, 5] \n", particle.print_particle_position()
+        )
+        # pass
 
     def test_add_to_stuck_list(self):
         """
@@ -52,26 +52,86 @@ class TestParticleMisc(unittest.TestCase):
         self.assertTrue(particle.stuck_list, [[0, 0], [5, 5],])
 
 
+class TestPickDirection(unittest.TestCase):
+    """
+    Class to test pick_direction()
+
+    Check: Every value generated is in (0, 3), Equal distribution of the four
+            directions,
+    """
 
 class TestTakeStep(unittest.TestCase):
 
     """
-    Class to test take_step()
+    Class to make sure that the particle moves one and only one step away
+    and in one of four directions (UP, DOWN, LEFT, RIGHT).
+
+    Four directions of movement, four cases
+    Case 1: UP       x_n+1 = [x, y+1]
+    Case 2: DOWN     x_n+1 = [x, y-1]
+    Case 3: LEFT     x_n+1 = [x-1, y]
+    Case 4: RIGHT    x_n+1 = [x+1, y]
     """
 
-    def test_take_step(self):
+    def test_take_step_up(self):
         """
-        Test to make sure that the particle moves one and only one step away
-        and in one of four directions (UP, DOWN, LEFT, RIGHT)
-
-        Check: If (x,y)_n+1 has x OR y value one greater than (x,y)_n
+        Check: particle.y is increased by one after take_step() moves the 
+        particle UP
 
         Case 1: Move UP: [x, y+1]
-        Case 2: Move DOWN: [x, y-1]
+        
+        
         Case 3: Move RIGHT: [x+1, y]
         Case 4: Move LEFT: [x-1, y]
         """
-        pass
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 5, 5
+        particle.take_step(0)      # Move particle UP
+        self.assertEqual(
+            [5, 6], [particle.x, particle.y]
+        )
+
+    def test_take_step_down(self):
+        """
+        Check: particle.y is decreased by one after take_step() moves the 
+        particle DOWN
+
+        Case 2: Move DOWN: [x, y-1]
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 5, 5
+        particle.take_step(1)     # Move particle DOWN
+        self.assertEqual(
+            [5, 4], [particle.x, particle.y]
+        )
+
+    def test_take_step_left(self):
+        """
+        Check: particle.x is decreased by one after take_step() moves the 
+        particle LEFT
+
+        Case 2: Move LEFT: [x-1, y]
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 5, 5
+        particle.take_step(2)     # Move particle LEFT
+        self.assertEqual(
+            [4, 5], [particle.x, particle.y]
+        )
+
+    def test_take_step_right(self):
+        """
+        Check: particle.x is increased by one after take_step() moves the 
+        particle RIGHT
+
+        Case 2: Move RIGHT: [x-1, y]
+        """
+        particle = Particle(axis_length=10, stuck_list=[[0, 0],])
+        particle.x, particle.y = 5, 5
+        particle.take_step(3)     # Move particle LEFT
+        self.assertEqual(
+            [6,5], [particle.x, particle.y]
+        )
 
 
 class TestIsFrozen(unittest.TestCase):

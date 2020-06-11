@@ -35,7 +35,6 @@ particles = [
 
 
 for particle in particles:
-    particle.generate_initial_position()
     particle.walk_particle()
 
 print(stuck_list)

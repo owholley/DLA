@@ -9,6 +9,9 @@ class Particle:
         self.steps = 0
         self.on_lattice = True
         self.frozen = False
+        # The particle generation is left over from starting off thinking of
+        #  the seed on the bottom of the lattice with application in terms of
+        #  modeling frost formation on an existing snowpack.
         self.x = np.random.randint(-self.axis_length/2, self.axis_length)
         self.y = np.random.randint(-self.axis_length/2, self.axis_length)
         
@@ -18,17 +21,20 @@ class Particle:
     def print_particle_position(self):
         return(f'Particle Position: [{self.x}, {self.y}] \n')
 
-    def take_step(self):
+    def pick_direction(self):
+        self.direction = np.random.randint(0,3)
+
+    def take_step(self, direction=pick_direction):
         '''
         TODO add in a dictionary/vector containing the direction of movement
         ''' 
         # direction = 2
-        direction = np.random.randint(0,3)
+        # direction = pick_direction
         if direction == 0:          # up
             self.y += 1
-        elif direction == 1:        # right
+        elif direction == 3:        # right
             self.x += 1
-        elif direction == 2:        # down
+        elif direction == 1:        # down
             self.y -= 1
         else:                       # left
             self.x -= 1
